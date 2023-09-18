@@ -72,12 +72,11 @@ namespace ClassLibraryBook
         public Book Delete(int id)
         {
             Book bookToRemove = GetById(id);
-
-            if (bookToRemove != null)
+            if (bookToRemove == null)
             {
-                books.Remove(bookToRemove);
+                throw new ArgumentException($"No book with id {id} found.");
             }
-
+            books.Remove(bookToRemove);
             return bookToRemove;
         }
 

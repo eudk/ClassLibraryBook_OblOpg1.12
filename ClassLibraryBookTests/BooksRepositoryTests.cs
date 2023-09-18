@@ -40,13 +40,13 @@ public class BooksRepositoryTests
         //Arrange
         var c = new BooksRepository();
         //Act
-        var book = new Book(1, "Tester", 1100);
+        var book = new Book(6, "Tester", 1100);
         c.Add(book);
         //Assert
-       Assert.AreEqual(5, c.Get().Count); 
+       Assert.AreEqual(6, c.Get().Count); 
        Assert.AreEqual(1, c.Get()[0].Id);
-       Assert.AreEqual("Tester", c.Get()[0].Title);
-       Assert.AreEqual(1100, c.Get()[0].Price);
+       Assert.AreEqual("Tester", c.Get()[5].Title);
+       Assert.AreEqual(1100, c.Get()[5].Price);
     }
 
 
@@ -58,10 +58,10 @@ public class BooksRepositoryTests
         //Act
         c.Delete(2);
         //Assert
-        Assert.AreEqual(2, c.Get().Count);
+        Assert.AreEqual(4, c.Get().Count); // 5 BOOKS - 1 BOOK = 4 BOOKS
         Assert.AreEqual(1, c.Get()[0].Id);
         Assert.AreEqual(3, c.Get()[1].Id);
-        Assert.ThrowsException<ArgumentException>(() => c.Delete(4));
+        Assert.ThrowsException<ArgumentException>(() => c.Delete(2));
 
     }
 
@@ -71,7 +71,7 @@ public class BooksRepositoryTests
     {
         var c = new BooksRepository();
         c.Update(2, new Book(2, "Hobitten",1100));
-        Assert.AreEqual(3, c.Get().Count);
+        Assert.AreEqual(5, c.Get().Count);
         Assert.AreEqual(2, c.Get()[1].Id);
         Assert.AreEqual("Hobitten", c.Get()[1].Title);
         Assert.AreEqual(1100, c.Get()[1].Price);

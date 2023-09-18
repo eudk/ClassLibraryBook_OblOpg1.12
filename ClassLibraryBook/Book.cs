@@ -30,11 +30,12 @@ namespace ClassLibraryBook
 
         public void ValidateTitle()
         {
-            if (string.IsNullOrEmpty(Title) &&  Title.Length < 3)
+            if (string.IsNullOrEmpty(Title) || Title.Length < 3)
             {
                 throw new ArgumentException("Titel må ikke være null og skal være mindst 3 karaktere lang");
             }
         }
+
 
         public void ValidatePrice()
         {
