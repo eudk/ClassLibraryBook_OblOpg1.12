@@ -32,39 +32,46 @@ namespace ClassLibraryBook
 
 
 
-  
-        public IEnumerable<Book> Get(int? priceUnder = null, string? titleWord = null, string? orderBy = null) // Filter by price, title and order by price or title 
+   public IEnumerable<Book> Get(int? priceUnder = null, string? titleWord = null, string? orderBy = null) //sort metode virker bedre med REST
         {
-            IEnumerable<Book> result = books;
+            IEnumerable<Book> result = new List<Book>(books);
 
             if (priceUnder != null)
             {
-                result = result.Where(book => book.Price < priceUnder);
+                result = result.Where(m => m.Price < priceUnder);
             }
 
             if (titleWord != null)
             {
-                result = result.Where(book => book.Title.Contains(titleWord));
+                result = result.Where(m => m.Title != null && m.Title.Contains(titleWord));
             }
 
             if (orderBy != null)
             {
+                orderBy = orderBy.ToLower();
                 switch (orderBy)
                 {
-                    case "price":
-                        result = result.OrderBy(book => book.Price);
-                        break;
                     case "title":
-                        result = result.OrderBy(book => book.Title);
+                    case "title_ascend":
+                        result = result.OrderBy(m => m.Title);
+                        break;
+                    case "title_descend":
+                        result = result.OrderByDescending(m => m.Title);
+                        break;
+                    case "price":
+                    case "price_ascend":
+                        result = result.OrderBy(m => m.Price);
+                        break;
+                    case "price_descend":
+                        result = result.OrderByDescending(m => m.Price);
                         break;
                     default:
-                        throw new ArgumentException($"Unknown order by value {orderBy}");
+                        break;
                 }
             }
-
             return result;
         }
-
+        
 
        /* public List<Book> Get(Func<Book, bool> filter = null, Func<IEnumerable<Book>, IOrderedEnumerable<Book>> orderBy = null) // Get list of books with filter and order by price or title, Dont use this for REST related 
         {
