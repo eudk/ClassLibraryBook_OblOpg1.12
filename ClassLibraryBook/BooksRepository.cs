@@ -32,7 +32,41 @@ namespace ClassLibraryBook
 
 
 
-        public List<Book> Get(Func<Book, bool> filter = null, Func<IEnumerable<Book>, IOrderedEnumerable<Book>> orderBy = null) // Get list of books with filter and order by price or title 
+  
+        public IEnumerable<Book> Get(int? priceUnder = null, string? titleWord = null, string? orderBy = null) // Filter by price, title and order by price or title 
+        {
+            IEnumerable<Book> result = books;
+
+            if (priceUnder != null)
+            {
+                result = result.Where(book => book.Price < priceUnder);
+            }
+
+            if (titleWord != null)
+            {
+                result = result.Where(book => book.Title.Contains(titleWord));
+            }
+
+            if (orderBy != null)
+            {
+                switch (orderBy)
+                {
+                    case "price":
+                        result = result.OrderBy(book => book.Price);
+                        break;
+                    case "title":
+                        result = result.OrderBy(book => book.Title);
+                        break;
+                    default:
+                        throw new ArgumentException($"Unknown order by value {orderBy}");
+                }
+            }
+
+            return result;
+        }
+
+
+       /* public List<Book> Get(Func<Book, bool> filter = null, Func<IEnumerable<Book>, IOrderedEnumerable<Book>> orderBy = null) // Get list of books with filter and order by price or title, Dont use this for REST related 
         {
             IEnumerable<Book> result = books;
 
@@ -48,6 +82,8 @@ namespace ClassLibraryBook
 
             return result.ToList();
         }
+       */
+
 
 
         public Book GetById(int id) // Get book by id
